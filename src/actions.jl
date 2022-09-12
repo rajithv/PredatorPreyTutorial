@@ -1,3 +1,4 @@
+# Agent-step function for agents of the type "Sheep"
 function sheepwolf_step!(sheep::Sheep, model)
     walk!(sheep, rand, model)
     sheep.energy -= 1
@@ -11,6 +12,7 @@ function sheepwolf_step!(sheep::Sheep, model)
     end
 end
 
+# Agent-step function for agents of the type "Wolf"
 function sheepwolf_step!(wolf::Wolf, model)
     walk!(wolf, rand, model)
     wolf.energy -= 1
@@ -26,12 +28,14 @@ function sheepwolf_step!(wolf::Wolf, model)
     end
 end
 
+# Select a sheep for dinner
 function first_sheep_in_position(pos, model)
     ids = ids_in_position(pos, model)
     j = findfirst(id -> model[id] isa Sheep, ids)
     isnothing(j) ? nothing : model[ids[j]]::Sheep
 end
 
+# Eat function for Agents of the type "Sheep"
 function eat!(sheep::Sheep, model)
     if model.fully_grown[sheep.pos...]
         sheep.energy += sheep.Δenergy
@@ -40,12 +44,13 @@ function eat!(sheep::Sheep, model)
     return
 end
 
+# Eat function for Agents of the type "Wolf"
 function eat!(wolf::Wolf, sheep::Sheep, model)
     kill_agent!(sheep, model)
     wolf.energy += wolf.Δenergy
     return
 end
-
+# Reproducing function for agents (for both agent types)
 function reproduce!(agent::A, model) where {A}
     agent.energy /= 2
     id = nextid(model)
@@ -54,6 +59,7 @@ function reproduce!(agent::A, model) where {A}
     return
 end
 
+# The model step function that maintains grass growth
 function grass_step!(model)
     @inbounds for p in positions(model) # we don't have to enable bound checking
         if !(model.fully_grown[p...])

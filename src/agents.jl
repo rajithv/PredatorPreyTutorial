@@ -1,3 +1,5 @@
+# Agent declarations using the @agent macro
+
 @agent Sheep GridAgent{2} begin
     energy::Float64
     reproduction_prob::Float64
