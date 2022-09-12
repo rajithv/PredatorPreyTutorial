@@ -1,6 +1,6 @@
 # Agent-step function for agents of the type "Sheep"
 function sheepwolf_step!(sheep::Sheep, model)
-    walk!(sheep, rand, model)
+    walk!(sheep, rand, model) # walk!(agent, direction::NTuple, model; ifempty = false)
     sheep.energy -= 1
     if sheep.energy < 0
         kill_agent!(sheep, model)
